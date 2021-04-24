@@ -3,15 +3,13 @@
 # author : osada (http://ossa2019.stars.ne.jp/)
 
 '''
-[*] Windows Only
+WindowsOS と MacOSX どちらでも動作しますが、Windowsの場合は多少レイアウトがずれることがあります。
 
-English:
-If you put "0" in the "最初にあける数", the answer will be filled automatically.
-Enter "*" (asterisk) in the unknown cell. Replace the "*" with the answer.
+"最初にあける数"に「 0 」を入れると答えがすでに埋まった状態で始まります。
+答えがわからないマスに「 * 」(アスタリスク)を入力するとそれが答えに置換されます。
 
-日本語:
-"最初にあける数"に「 0 」を入れると答えがすでに埋まった状態で始まる．
-分からないマスに「 * 」(アスタリスク)を入力するとそこが答えに置換される．
+また、”最初に開ける数”は開けるパネルのランダム抽選の回数です。なので「 81 」と入力しても81枚が全部開のではなく、答えが81枚のどこか一枚に入る作業が81回起こるだけです。
+もしそれが気に入らなければ496行目にある関数 func() 内の変数 num での動作を書き換えてください。
 '''
 
 import numpy as np, tkinter as t, random, sys
