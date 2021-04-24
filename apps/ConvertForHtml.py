@@ -52,7 +52,7 @@ def main():
     
     app = t.Tk()
     app.geometry( '1300x600' )
-    app.title( 'PythonCode-Html変換' )
+    app.title( 'テキストをHtml形式に変換' )
     app.resizable( width=False, height=False )
     
     inp = t.Text( app, background='#f0f0e0', font=('Arial',12) )
