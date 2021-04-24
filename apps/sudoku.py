@@ -18,8 +18,8 @@ def main():
     global nums_9x9, answer
     nums_9x9 = np.zeros((9,9), dtype=int)
     squr = []
-    for i in range(0, 9):
-        for j in range(0, 9):
+    for i in range(9):
+        for j in range(9):
             squr.append((i, j))
     while(len(squr) > 0):
         c = 0
@@ -54,15 +54,15 @@ def main():
             break
         nums_9x9 = np.zeros((9,9), dtype=int)
         squr = []
-        for i in range(0, 9):
-            for j in range(0, 9):
+        for i in range(9):
+            for j in range(9):
                 squr.append((i, j))
     if answer:
         print('Answer ：\n{}'.format(nums_9x9),end='\n\n') # debug
 
 def zero_count(arraylist):
-    for i in range(0, 9):
-        for j in range(0, 9):
+    for i in range(9):
+        for j in range(9):
             n = nums_9x9[(i, j)]
             if(n == 0):
                 return True
@@ -72,7 +72,7 @@ def zero_count(arraylist):
 
 def row_num_list(x, y):
     num_list = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-    for i in range(0, 9):
+    for i in range(9):
         n = nums_9x9[(x, i)]
         if((y != i) and (n != 0)):
             num_list.remove(n)
@@ -80,7 +80,7 @@ def row_num_list(x, y):
 
 def col_num_list(x, y):
     num_list = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-    for i in range(0, 9):
+    for i in range(9):
         n = nums_9x9[(i, y)]
         if((x != i) and (n != 0)):
             num_list.remove(n)
@@ -94,8 +94,8 @@ def box_num_list(x, y):
     sets_list = [sets1, sets2, sets3]
     x_sets = sets_list[x % 3]
     y_sets = sets_list[y % 3]
-    for i in range(0, 3):
-        for j in range(0, 3):
+    for i in range(3):
+        for j in range(3):
             setx = x + x_sets[i]
             sety = y + y_sets[j]
             n = nums_9x9[(setx, sety)]
@@ -105,7 +105,7 @@ def box_num_list(x, y):
 
 def row_check(number, x, y):
     c = 0
-    for i in range(0, 9):
+    for i in range(9):
         if(number == nums_9x9[(x, i)]):
             c = c + 1
         else:
@@ -117,7 +117,7 @@ def row_check(number, x, y):
 
 def col_check(number, x, y):
     c = 0
-    for i in range(0, 9):
+    for i in range(9):
         if(number == nums_9x9[(i, y)]):
             c = c + 1
         else:
@@ -135,8 +135,8 @@ def box_check(number, x, y):
     x_sets = sets_list[x % 3]
     y_sets = sets_list[y % 3]
     c = 0
-    for i in range(0, 3):
-        for j in range(0, 3):
+    for i in range(3):
+        for j in range(3):
             setx = x + x_sets[i]
             sety = y + y_sets[j]
             n = nums_9x9[(setx, sety)]
@@ -153,7 +153,7 @@ def ok_row_num(x, y):
     coordinate_list = []
     collect_list = []
     all_list = []
-    for i in range(0, 9):
+    for i in range(9):
         if(nums_9x9[(x, i)] == 0):
             row_list = row_num_list(x, i)
             col_list = col_num_list(x, i)
@@ -163,7 +163,7 @@ def ok_row_num(x, y):
             coordinate_list.append((x, i))
             collect_list.append(and_list)
             all_list = all_list + and_list
-    for i in range(0, len(coordinate_list)):
+    for i in range(len(coordinate_list)):
         for j in collect_list[i]:
             coorx, coory = coordinate_list[i]
             c = all_list.count(j)
@@ -175,7 +175,7 @@ def ok_col_num(x, y):
     coordinate_list = []
     collect_list = []
     all_list = []
-    for i in range(0, 9):
+    for i in range(9):
         if(nums_9x9[(i, y)] == 0):
             row_list = row_num_list(i, y)
             col_list = col_num_list(i, y)
@@ -185,7 +185,7 @@ def ok_col_num(x, y):
             coordinate_list.append((i, y))
             collect_list.append(and_list)
             all_list = all_list + and_list
-    for i in range(0, len(coordinate_list)):
+    for i in range(len(coordinate_list)):
         for j in collect_list[i]:
             coorx, coory = coordinate_list[i]
             c = all_list.count(j)
@@ -203,8 +203,8 @@ def ok_box_num(x, y):
     coordinate_list = []
     collect_list = []
     all_list = []
-    for i in range(0, 3):
-        for j in range(0, 3):
+    for i in range(3):
+        for j in range(3):
             setx = x + x_sets[i]
             sety = y + y_sets[j]
             if(nums_9x9[(setx, sety)] == 0):
@@ -216,7 +216,7 @@ def ok_box_num(x, y):
                 coordinate_list.append((setx, sety))
                 collect_list.append(and_list)
                 all_list = all_list + and_list
-    for i in range(0, len(coordinate_list)):
+    for i in range(len(coordinate_list)):
         for j in collect_list[i]:
             coorx, coory = coordinate_list[i]
             c = all_list.count(j)
@@ -248,19 +248,19 @@ def ok_num(x, y):
                 if(box_num_TF):
                     return box_num
                 else:
-                    r = random.randrange(0, len(and_list))
+                    r = random.randrange(len(and_list))
                     return and_list[r]
 
 def row_only_check(number, x, y):
     row_only_list = []
-    for i in range(0, 9):
+    for i in range(9):
         row_list = row_num_list(x, i)
         col_list = col_num_list(x, i)
         box_list = box_num_list(x, i)
         l = set(row_list) & set(col_list) & set(box_list)
         and_list = list(l)
         row_only_list.append(and_list)
-    for i in range(0, 9):
+    for i in range(9):
         rolist = row_only_list[i]
         if((y != i) and (len(rolist) == 1) and (rolist[0] == number)):
             return False
@@ -268,14 +268,14 @@ def row_only_check(number, x, y):
 
 def col_only_check(number, x, y):
     col_only_list = []
-    for i in range(0, 9):
+    for i in range(9):
         row_list = row_num_list(i, y)
         col_list = col_num_list(i, y)
         box_list = box_num_list(i, y)
         l = set(row_list) & set(col_list) & set(box_list)
         and_list = list(l)
         col_only_list.append(and_list)
-    for i in range(0, 9):
+    for i in range(9):
         colist = col_only_list[i]
         if((x != i) and (len(colist) == 1) and (colist[0] == number)):
             return False
@@ -289,8 +289,8 @@ def box_only_check(number, x, y):
     sets_list = [sets1, sets2, sets3]
     x_sets = sets_list[x % 3]
     y_sets = sets_list[y % 3]
-    for i in range(0, 3):
-        for j in range(0, 3):
+    for i in range(3):
+        for j in range(3):
             setx = x + x_sets[i]
             sety = y + y_sets[j]
             row_list = row_num_list(setx, sety)
@@ -300,8 +300,8 @@ def box_only_check(number, x, y):
             and_list = list(l)
             box_only_list.append(and_list)
     count = 0
-    for i in range(0, 3):
-        for j in range(0, 3):
+    for i in range(3):
+        for j in range(3):
             bolist = box_only_list[count]
             count = count + 1
             setx = x + x_sets[i]
@@ -315,11 +315,11 @@ def rand_insert(place, squr, nums_9x9_list):
     num_list = [1, 2, 3, 4, 5, 6, 7, 8, 9]
     random.shuffle(num_list)
     squr_li = []
-    for i in range(0, 3):
-        for j in range(0, 3):
+    for i in range(3):
+        for j in range(3):
             squr_li.append((i + place, j + place))
     while(len(squr_li) > 0):
-        r = random.randrange(0, len(squr_li))
+        r = random.randrange(len(squr_li))
         x, y = squr_li[r]
         count = 0
         while(True):
@@ -351,11 +351,11 @@ def check_list(n, x, y):
 
 def row_only_set(squr, nums_9x9):
     global erasure
-    for i in range(0, 9):
+    for i in range(9):
         coordinate_list = []
         collect_list = []
         all_list = []
-        for j in range(0, 9):
+        for j in range(9):
             if(nums_9x9[(i, j)] == 0):
                 row_list = row_num_list(i, j)
                 col_list = col_num_list(i, j)
@@ -365,10 +365,10 @@ def row_only_set(squr, nums_9x9):
                 coordinate_list.append((i, j))
                 collect_list.append(and_list)
                 all_list = all_list + and_list
-        for k in range(0, len(all_list)):
+        for k in range(len(all_list)):
             c = all_list.count(all_list[k])
             if(c == 1):
-                for coor in range(0, len(collect_list)):
+                for coor in range(len(collect_list)):
                     TF = all_list[k] in collect_list[coor]
                     if(TF):
                         coorx, coory = coordinate_list[coor]
@@ -389,11 +389,11 @@ def row_only_set(squr, nums_9x9):
 
 def col_only_set(squr, nums_9x9):
     global erasure
-    for i in range(0, 9):
+    for i in range(9):
         coordinate_list = []
         collect_list = []
         all_list = []
-        for j in range(0, 9):
+        for j in range(9):
             if(nums_9x9[(j, i)] == 0):
                 row_list = row_num_list(j, i)
                 col_list = col_num_list(j, i)
@@ -403,10 +403,10 @@ def col_only_set(squr, nums_9x9):
                 coordinate_list.append((j, i))
                 collect_list.append(and_list)
                 all_list = all_list + and_list
-        for k in range(0, len(all_list)):
+        for k in range(len(all_list)):
             c = all_list.count(all_list[k])
             if(c == 1):
-                for coor in range(0, len(collect_list)):
+                for coor in range(len(collect_list)):
                     TF = all_list[k] in collect_list[coor]
                     if(TF):
                         coorx, coory = coordinate_list[coor]
@@ -440,8 +440,8 @@ def box_only_set(squr, nums_9x9):
         coordinate_list = []
         collect_list = []
         all_list = []
-        for i in range(0, 3):
-            for j in range(0, 3):
+        for i in range(3):
+            for j in range(3):
                 setx = boxx + x_sets[i]
                 sety = boxy + y_sets[j]
                 if(nums_9x9[(setx, sety)] == 0):
@@ -453,10 +453,10 @@ def box_only_set(squr, nums_9x9):
                     coordinate_list.append((setx, sety))
                     collect_list.append(and_list)
                     all_list = all_list + and_list
-        for k in range(0, len(all_list)):
+        for k in range(len(all_list)):
             c = all_list.count(all_list[k])
             if(c == 1):
-                for coor in range(0, len(collect_list)):
+                for coor in range(len(collect_list)):
                     TF = all_list[k] in collect_list[coor]
                     if(TF):
                         coorx, coory = coordinate_list[coor]
