@@ -7,11 +7,11 @@
 
 English:
 If you put "0" in the "最初にあける数", the answer will be filled automatically.
-Enter "*" (asterisk) in the unknown cell and press [ctrl] + [space] to replace the asterisk with the answer.
+Enter "*" (asterisk) in the unknown cell. Replace the "*" with the answer.
 
 日本語:
 "最初にあける数"に「 0 」を入れると答えがすでに埋まった状態で始まる．
-分からないマスに「 * 」(アスタリスク)を入力し，[ctrl] + [space]を押すとアスタリスクが答えに置換される．
+分からないマスに「 * 」(アスタリスク)を入力するとそこが答えに置換される．
 '''
 
 import numpy as np, tkinter as t, random, sys
