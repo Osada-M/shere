@@ -122,7 +122,7 @@ def rep_py(xs):
 
     # dec4
     lis4_underScore = ['init', 'name', 'main', 'del', 'new']
-    lis4_kakko = ['print', 'range', 'type', 'super']
+    lis4_kakko = ['print', 'range', 'type', 'super', 'replace']
     for l in lis4_underScore:
         xs = xs.replace('__'+l+'__', '<span class="dec4">'+l+'</span> ')
     for l in lis4_kakko:
