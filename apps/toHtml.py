@@ -89,20 +89,20 @@ def rep_py(xs):
     xs = xs.replace('ValueError', '<span class="dec4">ValueError</span>')
 
     # dec0
-    lis0 = ['def', 'return', 'import', 'pass', 'yield', 'lambda', 'raise', 'break', 'continue']
+    lis0 = ['def', 'return', 'import', 'pass', 'yield', 'lambda', 'raise', 'break', 'continue', 'with]
     for l in lis0:
         xs = xs.replace(l, '<span class="dec0">'+l+'</span>')
     xs = xs.replace('class ', '<span class="dec0">class</span> ')
 
     # dec1
     xs = xs.replace('elif', '<span class="dec1">el</span>if')
+    xs = xs.replace('if(', '<span class="dec1">if</span>(')
     lis1 = ['else', 'try', 'except']
     lis1_space = ['if', 'for', 'in', 'is', 'as']
     for l in lis1:
         xs = xs.replace(l, '<span class="dec1">'+l+'</span>')
     for l in lis1_space:
         xs = xs.replace(l+' ', '<span class="dec1">'+l+'</span> ')
-    xs = xs.replace('if(', '<span class="dec1">if</span>')
 
     # dec2
     lis2 = ['self', '@', 'event']
