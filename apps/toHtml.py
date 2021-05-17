@@ -89,7 +89,7 @@ def rep_py(xs):
     xs = xs.replace('ValueError', '<span class="dec4">ValueError</span>')
 
     # dec0
-    lis0 = ['def', 'return', 'import', 'pass', 'yield', 'lambda', 'raise', 'break', 'continue', 'with]
+    lis0 = ['def', 'return', 'import', 'pass', 'yield', 'lambda', 'raise', 'break', 'continue', 'with', 'while']
     for l in lis0:
         xs = xs.replace(l, '<span class="dec0">'+l+'</span>')
     xs = xs.replace('class ', '<span class="dec0">class</span> ')
@@ -122,7 +122,7 @@ def rep_py(xs):
 
     # dec4
     lis4_underScore = ['init', 'name', 'main', 'del', 'new']
-    lis4_kakko = ['print', 'range', 'type', 'super', 'replace']
+    lis4_kakko = ['print', 'range', 'type', 'super', 'replace', 'open', 'read', 'write']
     for l in lis4_underScore:
         xs = xs.replace('__'+l+'__', '<span class="dec4">'+l+'</span> ')
     for l in lis4_kakko:
