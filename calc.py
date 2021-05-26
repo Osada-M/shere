@@ -8,7 +8,7 @@ import pprint
 import os
 
 
-# テキストファイルに書き込む？
+# サンプリングした値をテキストファイルに書き込む？
 isSave = False
 # グラフを描画する？
 isPlot = True
