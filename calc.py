@@ -1,6 +1,5 @@
 #! /usr/local/bin/env python3
 #! -*- coding: utf-8 -*-
-# %matplotlib inline
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
