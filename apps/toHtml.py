@@ -8,21 +8,43 @@
 # css にて、
 # .dec0{color : red}
 # このようにそのクラスに色を指定することでその単語に色が付き、コードが読みやすくなります。
-# このクラスは dec0 から dec5 までの６種類ありますので、ご自由にお使いください。
+# このクラスは dec0 から dec6 までの７種類ありますので、ご自由にお使いください。
 #
 # 参考までに私が普段使っている css の一部から該当する箇所を切り取り、添付いたします。
-# .dec0{color : orange;} /* オレンジ */
-# .dec1{color : cyan;} /* 水色 */
+# .dec0{color : orange;}  /* オレンジ */
+# .dec1{color : cyan;}    /* 水色 */
 # .dec2{color : #fd7f7f;} /* 赤 */
 # .dec3{color : #9dff76;} /* 黄緑 */
 # .dec4{color : #fdff83;} /* 黄色 */
 # .dec5{color : #e784eb;} /* ピンク */
+# .dec6{color : #8d8d8d;} /* 灰色 */
 ########################################################
 
 
 import tkinter as t
 
 def func(code:str=None):
+    # 通常変換
+    def rep(xs):
+        xs = xs.replace('&', '&amp;')
+        #xs = xs.replace('\t', '&#9')
+        xs = xs.replace('\t', '&nbsp;&nbsp;&nbsp;&nbsp;')
+        #xs = xs.replace('\t', '&nbsp;&nbsp;')
+        xs = xs.replace('　', '&emsp;')
+        xs = xs.replace('<', '&lt;')
+        xs = xs.replace('>', '&gt;')
+        xs = xs.replace('¥', '&yen;')
+        xs = xs.replace('←', '&larr;')
+        xs = xs.replace('↑', '&uarr;')
+        xs = xs.replace('→', '&rarr;')
+        xs = xs.replace('↓', '&darr;')
+        xs = xs.replace('^', '&circ;')
+        xs = xs.replace('~', '&tilde;')
+        xs = xs.replace('―', '&mdash;')
+        xs = xs.replace('"', '&quot;')
+        xs = xs.replace('\n', '<br>\n')
+        return xs
+
     frm = inp.get(0., t.END)
     boo = [ True, True ]
     new = ''
@@ -46,6 +68,8 @@ def func(code:str=None):
         new = rep_html_1(new)
     elif(code=='js'):
         new = rep_js(new)
+    elif(code=='sp'):
+        new = rep_sp(new)
     
     if(new[ len(new)-5: ] == '<br>\n'):
         new = new[ :len(new)-5 ]
@@ -60,28 +84,8 @@ def func_html(event):
     func('html')
 def func_js(event):
     func('js')
-    
-# 通常変換
-def rep(xs):
-    xs = xs.replace('&', '&amp;')
-    #xs = xs.replace('\t', '&#9')
-    xs = xs.replace('\t', '&nbsp;&nbsp;&nbsp;&nbsp;')
-    #xs = xs.replace('\t', '&ensp;&ensp;')
-    xs = xs.replace('　', '&emsp;')
-    xs = xs.replace('<', '&lt;')
-    xs = xs.replace('>', '&gt;')
-    xs = xs.replace('¥', '&yen;')
-    xs = xs.replace('←', '&larr;')
-    xs = xs.replace('↑', '&uarr;')
-    xs = xs.replace('→', '&rarr;')
-    xs = xs.replace('↓', '&darr;')
-    xs = xs.replace('^', '&circ;')
-    xs = xs.replace('~', '&tilde;')
-    xs = xs.replace('―', '&mdash;')
-    xs = xs.replace('"', '&quot;')
-    xs = xs.replace('\n', '<br>\n')
-
-    return xs
+def func_sp(event):
+    func('sp')
 
 # Python
 def rep_py(xs):
@@ -89,7 +93,7 @@ def rep_py(xs):
     xs = xs.replace('ValueError', '<span class="dec4">ValueError</span>')
 
     # dec0
-    lis0 = ['def', 'return', 'import', 'pass', 'yield', 'lambda', 'raise', 'break', 'continue', 'with', 'while']
+    lis0 = ['def', 'return', 'import', 'pass', 'yield', 'lambda', 'raise', 'break', 'continue', 'with', 'while', 'from', 'match', 'case']
     for l in lis0:
         xs = xs.replace(l, '<span class="dec0">'+l+'</span>')
     xs = xs.replace('class ', '<span class="dec0">class</span> ')
@@ -105,7 +109,8 @@ def rep_py(xs):
         xs = xs.replace(l+' ', '<span class="dec1">'+l+'</span> ')
 
     # dec2
-    lis2 = ['self', '@', 'event']
+    xs = xs.replace('kwargs', '<span class="dec2">kw</span>args')
+    lis2 = ['self', '@', 'event', '*', 'args']
     for l in lis2:
         xs = xs.replace(l, '<span class="dec2">'+l+'</span>')
 
@@ -122,7 +127,7 @@ def rep_py(xs):
 
     # dec4
     lis4_underScore = ['init', 'name', 'main', 'del', 'new']
-    lis4_kakko = ['print', 'range', 'type', 'super', 'replace', 'open', 'read', 'write']
+    lis4_kakko = ['print', 'range', 'type', 'super', 'replace', 'open', 'close', 'read', 'write', 'isinstance', 'len']
     for l in lis4_underScore:
         xs = xs.replace('__'+l+'__', '<span class="dec4">'+l+'</span> ')
     for l in lis4_kakko:
@@ -211,6 +216,14 @@ def rep_js(xs):
 
     return xs
 
+#特殊変換
+def rep_sp(xs):
+    #dec6
+    lis6 = ['&gt;&gt;', '$', '%']
+    for l in lis6:
+        xs = xs.replace(l, '<span class="dec6">'+l+'</span>')
+    return xs
+
 def first():
     out.insert(0., '←左画面にHtmlに変換したい文章を入力')
 
@@ -230,16 +243,23 @@ def main():
     but = t.Button(text=u'通常変換', background='#ffaaaa')
     but.place(x=5, y=600, width=70, height=20)
     but.bind('<Button-1>', func)
-    but_py = t.Button(text=u'Python', background='#ffaaaa')
+    but_py = t.Button(text=u'Python', background='#ffffff')
     but_py.place(x=75, y=600, width=70, height=20)
     but_py.bind('<Button-1>', func_py)
-    but_html = t.Button(text=u'HTML', background='#ffaaaa')
+    but_html = t.Button(text=u'HTML', background='#ffffff')
     but_html.place(x=145, y=600, width=70, height=20)
     but_html.bind('<Button-1>', func_html)
-    but_js = t.Button(text=u'JavaScript', background='#ffaaaa')
+    but_js = t.Button(text=u'JavaScript', background='#ffffff')
     but_js.place(x=215, y=600, width=70, height=20)
     but_js.bind('<Button-1>', func_js)
-    
+    but_sp = t.Button(text=u'特殊変換', background='#ffffff')
+    but_sp.place(x=285, y=600, width=70, height=20)
+    but_sp.bind('<Button-1>', func_sp)
+    but['background'] = '#ffffff'
+    but_py['background'] = '#ffffff'
+    but_html['background'] = '#ffffff'
+    but_js['background'] = '#ffffff'
+    but_sp['background'] = '#ffffff'
     app.bind('<Key-v>', func)
     
     first()
