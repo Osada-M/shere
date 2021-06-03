@@ -59,20 +59,20 @@ void DrawString(char *str, int w, int h, int x, int y)
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
     glLoadIdentity();
-    
+
     // ２次元描画
     gluOrtho2D(0, w, h, 0);
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
     glLoadIdentity();
-    
+
     // 文字列の描画
     glRasterPos2f(x, y);
     while(*str){
         glutBitmapCharacter(GLUT_BITMAP_9_BY_15, *str++);
     }
     glPopMatrix();
-    
+
     glMatrixMode(GL_PROJECTION);
     glPopMatrix();
     glMatrixMode(GL_MODELVIEW);
@@ -216,13 +216,13 @@ void planet(double radius, double kouten_r, double kouten_t, double kouten_tilt,
 
 // 軌道描画の定義
 // circle(軌道半径、軌道軸角度、y座標の調整、x座標の調整)
-void circle(double radius, double tilt, double y_fix, double x_fix){
+void circle(double radius, double tilt, double y_fix, double x_fix, double x_pow, double y_pow){
     glColor3f(0.3, 0.3, 0.3);
     glTranslated(x_fix, y_fix/rev_y, 0.0);
     glRotated(-tilt, 0.0, 0.0, 1.0);
     glBegin(GL_LINES);
     for(i=0; i<360; i++){
-        glVertex3f(radius*revolution*rev_const*sin(i*PI/180), 0.0, radius*revolution*rev_const*cos(i*PI/180));
+        glVertex3f(radius*(1-x_pow)*revolution*rev_const*sin(i*PI/180), 0.0, radius*(1-y_pow)*revolution*rev_const*cos(i*PI/180));
     }
     glEnd();
 }
@@ -247,9 +247,9 @@ void satellite(double master_radius, double master_kouten_r, double master_koute
 //    衛星の軌道の描画
     if(ring_boo == 1){
         glTranslated(0.0, y_fix/rev_y, 0.0);
-        glPushMatrix();{circle(kouten_r*satellite_buf_kouten, kouten_tilt, line_y_fix, x_fix);}
+        glPushMatrix();{circle(kouten_r*satellite_buf_kouten, kouten_tilt, line_y_fix, x_fix, 0.0, 0.0);}
         glPopMatrix();
-        
+
     }
 }
 
@@ -279,7 +279,7 @@ void myDisplay(void)
 {
     glEnable(GL_DEPTH_TEST);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    
+
     // 上部に表示するコメント
     glColor3d(0.8, 0.8, 0.8);
     DrawString("The solor system,  ID : 3EP4-16,  Name : Osada Masashi", width, height, 30, 30);
@@ -291,13 +291,13 @@ void myDisplay(void)
     DrawString("[z] : run speed change", width, height, 250, 70);
     DrawString("[x] : planet size change", width, height, 250, 100);
     DrawString("[c] : planet name show / hide", width, height, 250, 130);
-    
+
     // キーボードから得た移動量を反映
     glTranslated(move_x, move_y, move_z);
     move_x = move_y = move_z = 0.0;
-    
+
     glPushMatrix();
-    
+
     // 太陽
     glPushMatrix();{
         glColor3f(1.0, 0.5, 0.0);
@@ -321,73 +321,79 @@ void myDisplay(void)
         }
     }
     glPopMatrix();
-    
+
     // 水星
     glTranslated(-0.2, 0.0, 0.0);
     glPushMatrix();
     {
         glPushMatrix();{planet(2439.7, 0.3871, 0.2409, 7.01, 58.7, 0.01, -0.7, 0.0, 1.0, 1.0, 1.0, "mercury", 0, 0.0, 0.0);}
         glPopMatrix();
-        glPushMatrix();{circle(0.3871, 7.01, 0.0, 0.0);}
+        glPushMatrix();{circle(0.3871, 7.01, 0.0, 0.0, 0.0, 0.0);}
         glPopMatrix();
     }
     glPopMatrix();
-        
+
     // 金星
     glPushMatrix();{planet(6051.8, 0.7233, 0.6152, 3.39, 243, 177, -0.6, 0.0, 1.0, 1.0, 0.5, "venus", 0, 0.0, 0.0);}
     glPopMatrix();
-    glPushMatrix();{circle(0.7233, 3.39, 0.0, 0.0);}
+    glPushMatrix();{circle(0.7233, 3.39, 0.0, 0.0, 0.0, 0.0);}
     glPopMatrix();
-    
+
     // 地球
     glPushMatrix();{planet(6371.0, 1.0, 0.997, 0.0, 365, 23.4, 0.0, 0.0, 0.5, 1.0, 1.0, "earth", 0, 0.0, 0.0);}
     glPopMatrix();
-    glPushMatrix();{circle(1.0, 0.0, 0.0, 0.0);}
+    glPushMatrix();{circle(1.0, 0.0, 0.0, 0.0, 0.0, 0.0);}
     glPopMatrix();
     // 月(地)
-    glPushMatrix();{satellite(6371.0, 1.0, 0.997, 0.0, 0.0, 1737.1, 0.0026, 0.07506, 5.15, 27.3, 6.69, -0.04, 0.0, 0.8, 0.8, 0.8, 0.0, "moon", -4.0, 0, 0.0, 0.0);}
+    glPushMatrix();{satellite(6371.0, 1.0, 0.997, 0.0, 0.0, 1737.1, 0.0026, 0.07506, 5.15, 27.3, 6.69, -0.04, 0.0, 0.8, 0.8, 0.8, 0.0, "moon", -4.0, 1, 0.0, 0.0);}
     glPopMatrix();
-    
+
     // 火星
     glTranslated(0.7, -0.5, 0.0);
     glPushMatrix();
     {
         glPushMatrix();{planet(3390.0, 1.5237, 1.8809, 1.85, 1.03, 25.2, -0.7, 0.0, 1.0, 0.5, 0.5, "mars", 0, 0.0, 0.0);}
         glPopMatrix();
-        glPushMatrix();{circle(1.5237, 1.85, 0.0, 0.0);}
+        glPushMatrix();{circle(1.5237, 1.85, 0.0, 0.0, 0.0, 0.0);}
         glPopMatrix();
     }
     glPopMatrix();
-    
+
     // セレス、またはケレス
     glPushMatrix();{planet(772, 2.7668, 4.602, 10.594, 0.3781, 4, -6.3, 0.0, 1.0, 1.0, 1.0, "ceres", 1, 0.0, 0.0);}
     glPopMatrix();
-    
+    glPushMatrix();{
+        glTranslated(0.0, 0.0, 2.0);
+        glRotated(-2.0, 1.0, 1.0, 0.0);
+        circle(2.5, 10.594, 4.0, 0.0, 0.0, 0.0);
+    }
+    glPopMatrix();
+
     // 木星
     glPushMatrix();{planet(71492, 5.2026, 11.8622, 1.303, 0.414, 4, -1.6, 0.0, 1.0, 0.8, 0.5, "jupyter", 0, 0.0, 0.0);}
     glPopMatrix();
-    glPushMatrix();{circle(5.2026, 1.303, 0.0, 0.0);}
+    glPushMatrix();{circle(5.2026, 1.303, 0.0, 0.0, 0.0, 0.0);}
     glPopMatrix();
     // イオ(木)
-    glPushMatrix();{satellite(71492.0, 5.2026, 11.8622, 1.303, 0.414, 909.0, 0.0028, 0.0048, 0.036, 1.7692, 1.5424, -2.0, 0.0, 1.0, 1.0, 0.8, 0.0, "io", -20.0, 0, 0.0, 0.0);}
+    glPushMatrix();{satellite(71492.0, 5.2026, 11.8622, 1.303, 0.414, 909.0, 0.0028, 0.0048, 0.036, 1.7692, 1.5424, -2.0, 0.0, 1.0, 1.0, 0.8, 0.0, "io", -20.0, 1, 0.0, 0.0);}
     glPopMatrix();
     // エウロパ(木)
-    glPushMatrix();{satellite(71492.0, 5.2026, 11.8622, 1.303, 0.414, 1601.3695, 0.00447, 1.5512, 0.466, 3.551, 0.1, -2.0, 0.0, 1.0, 1.0, 0.8, 0.0, "europa", -35.0, 0, 0.0, 0.0);}
+    glPushMatrix();{satellite(71492.0, 5.2026, 11.8622, 1.303, 0.414, 1601.3695, 0.00447, 1.5512, 0.466, 3.551, 0.1, -2.0, 0.0, 1.0, 1.0, 0.8, 0.0, "europa", -35.0, 1, 0.0, 0.0);}
     glPopMatrix();
     // ガニメデ(木)
-    glPushMatrix();{satellite(71492.0, 5.2026, 11.8622, 1.303, 0.414, 2631.2, 0.00714, 0.0196, 0.195, 7.155, 0.33, -2.0, 0.0, 0.8, 0.8, 0.8, 0.0, "ganymede", -50.0, 0, 0.0, 0.0);}
+    glPushMatrix();{satellite(71492.0, 5.2026, 11.8622, 1.303, 0.414, 2631.2, 0.00714, 0.0196, 0.195, 7.155, 0.33, -2.0, 0.0, 0.8, 0.8, 0.8, 0.0, "ganymede", -50.0, 1, 0.0, 0.0);}
     glPopMatrix();
     // カリスト(木)
-    glPushMatrix();{satellite(71492.0, 5.2026, 11.8622, 1.303, 0.414, 2410.3, 0.0126, 0.0457, 0.281, 16.689, 0.0, -2.0, 0.0, 0.7, 0.7, 0.7, 0.0, "callisto", -65.0, 0, 0.0, 0.0);}
+    glPushMatrix();{satellite(71492.0, 5.2026, 11.8622, 1.303, 0.414, 2410.3, 0.0126, 0.0457, 0.281, 16.689, 0.0, -2.0, 0.0, 0.7, 0.7, 0.7, 0.0, "callisto", -65.0, 1, 0.0, 0.0);}
     glPopMatrix();
-    
+
     // 土星
     glTranslated(3.0, 0.0, 0.0);
     glPushMatrix();
     {
         glPushMatrix();{planet(60268.0, 9.55491, 29.53216, 2.4886, 0.42559, 25.33, -4.5, 0.0, 1.0, 0.8, 0.5, "saturn", 0, 0.0, 0.0);}
         glPopMatrix();
-        glPushMatrix();{circle(9.55491, 2.4886, 1.0, 0.0);}
+        glPushMatrix();{circle(9.55491, 2.4886, 1.0, 0.0, 0.0, 0.0);}
         glPopMatrix();
         // 土星の環
         glPushMatrix();{saturn_ring(1);}
@@ -425,18 +431,18 @@ void myDisplay(void)
         glPushMatrix();{saturn_ring(100);}
         glPopMatrix();
         // タイタン(土)
-        glPushMatrix();{satellite(60268.0, 9.55491, 29.53216, 2.4886, -4.5, 2574.73, 0.00815, 0.04369, 0.306, 15.94542, 0.0, -5.0, 0.0, 1.0, 0.7, 0.7, 0.0, "titan", -65.0, 0, 0.0, 0.0);}
+        glPushMatrix();{satellite(60268.0, 9.55491, 29.53216, 2.4886, -4.5, 2574.73, 0.00815, 0.04369, 0.306, 15.94542, 0.0, -5.0, 0.0, 1.0, 0.7, 0.7, 0.0, "titan", -65.0, 1, 0.0, 0.0);}
         glPopMatrix();
     }
     glPopMatrix();
-    
+
     //天王星
     glTranslated(8.0, -1.0, 5.0);
     glPushMatrix();
     {
         glPushMatrix();{planet(25559.0, 19.21845, 84.25301, 0.7733, 0.00197, 97.86, -2.5, 0.0, 0.8, 1.0, 1.0, "uranus", 0, 0.0, 0.0);}
         glPopMatrix();
-        glPushMatrix();{circle(19.21845, 0.7733, 1.0, 0.0);}
+        glPushMatrix();{circle(19.21845, 0.7733, 1.0, 0.0, 0.0, 0.0);}
         glPopMatrix();
         // 天王星の環
         glPushMatrix();{uranus_ring(1);}
@@ -455,28 +461,30 @@ void myDisplay(void)
         glPopMatrix();
     }
     glPopMatrix();
-    
+
     //海王星
     glTranslated(-10.0, -3.0, -10.0);
     glPushMatrix();
     {
         glPushMatrix();{planet(24622.0, 30.047, 164.79, 1.76917, 0.00184, 28.32, -11.5, 0.0, 0.5, 0.5, 0.8, "neptune", 0, 0.0, 0.0);}
         glPopMatrix();
-        glPushMatrix();{circle(30.047, 1.76917, 1.0, 0.0);}
+        glPushMatrix();{circle(30.047, 1.76917, 1.0, 0.0, 0.0, 0.0);}
         glPopMatrix();
         // トリトン(海)
-        glPushMatrix();{satellite(24622.0, 30.047, 164.79, 1.76917, -11.5, 1353.4, 0.00237, 0.0161, 129.812, 5.87639, 0.0, -9.0, 0.0, 0.8, 0.8, 0.8, -2.5, "triton", -65.0, 0, 0.0, 0.0);}
+        glPushMatrix();{satellite(24622.0, 30.047, 164.79, 1.76917, -11.5, 1353.4, 0.00237, 0.0161, 129.812, 5.87639, 0.0, -9.0, 0.0, 0.8, 0.8, 0.8, -2.5, "triton", -65.0, 1, 0.0, 0.0);}
         glPopMatrix();
     }
     glPopMatrix();
-    
-    //　冥王星　(楕円軌道)
+
+    //　冥王星
     glPushMatrix();{
         ellipse(39.44507, 247.74066, 0, 0.2);
         planet(1685.0, 39.44507, 247.74066, 17.089, -0.0175, 119.59, -200.0, 10.0, 0.8, 0.8, 0.8, "pluto", 1, 0.0, -50.0);
     }
     glPopMatrix();
-    
+    glPushMatrix();{circle(37.5, 17.089, -50.0, 25.5, 0.0, 0.2);}
+    glPopMatrix();
+
     //　ハレー彗星
     glPushMatrix();{
         glTranslated(60.5, 50.0, 0.0);
@@ -484,16 +492,13 @@ void myDisplay(void)
         planet(15.3, 17.83414, 75.3, 162.26269, 0.0, 0.0, 0.0, 0.0, 0.8, 0.8, 0.8, "halley", 2, 0.0, 0.0);
     }
     glPopMatrix();
-
-    //　エンケ彗星
     glPushMatrix();{
-        glTranslated(-2.0, 0.0, -3.55);
-        ellipse(2.21803, 3.3, 0.5, 0.0);
-        planet(2.4, 2.21803, 3.3, 11.7543, 0.0, 0.0, 7.0, 0.0, 0.8, 0.8, 0.8, "encke", 2, 0.0, 0.0);
+        glTranslated(0.0, 0.0, 7.0);
+        glRotated(-3.0, 1.0, 1.0, 0.0);
+        circle(16.1, 162.26269, 87.2, 64.3, 0.0, 0.5);
     }
     glPopMatrix();
 
-    
     glPopMatrix();
 	glutSwapBuffers();
     glFlush();
@@ -523,7 +528,7 @@ void myTimer(int value)
 		glutTimerFunc(samplingTime,myTimer,1);
         day += speed/hour;      // 日 (day)
         hour_now += speed;      // 時間 (hour)
-        
+
 		glutPostRedisplay();
 	}
 }
